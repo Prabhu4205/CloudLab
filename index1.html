@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="aadhaarApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d2d2d;
+        }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .result h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .result p {
+            margin: 5px 0 0;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-style: bold;
+            font-size: 25px;
+            color: green;
+        }
+    </style>
+</head>
+<body ng-controller="AadhaarController">
+
+    <div class="container">
+        <h1>Aadhaar Management System</h1>
+        <h2>Application Status Evaluation</h2>
+
+        <div class="form-group">
+            <label for="name">Applicant Name:</label>
+            <input type="text" id="name" ng-model="applicant.name" placeholder="Enter your name">
+        </div>
+
+        <div class="form-group">
+            <label for="aadhaarNumber">Aadhaar Number:</label>
+            <input type="number" id="aadhaarNumber" ng-model="applicant.aadhaarNumber" placeholder="Enter Aadhaar Number">
+        </div>
+
+        <div class="form-group">
+            <label for="docStatus">Document Verification Status:</label>
+            <select id="docStatus" ng-model="applicant.docStatus">
+                <option value="">--Select--</option>
+                <option value="verified">Verified</option>
+                <option value="incomplete">Incomplete</option>
+                <option value="failed">Failed</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="approvalStatus">Approval Status:</label>
+            <select id="approvalStatus" ng-model="applicant.approvalStatus">
+                <option value="">--Select--</option>
+                <option value="approved">Approved</option>
+                <option value="pending">Pending</option>
+            </select>
+        </div>
+
+        <button ng-click="checkStatus()">Check Status</button>
+
+        <div class="result">
+            <h3>Aadhaar Application Status:</h3>
+            <p>{{applicationStatus}}</p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        var app = angular.module('aadhaarApp', []);
+        app.controller('AadhaarController', function($scope) {
+            $scope.applicant = {};
+            $scope.applicationStatus = "";
+
+            $scope.checkStatus = function() {
+                if ($scope.applicant.docStatus === "verified" && $scope.applicant.approvalStatus === "approved") {
+                    $scope.applicationStatus = "Approved";
+                } else if ($scope.applicant.docStatus === "verified" && $scope.applicant.approvalStatus === "pending") {
+                    $scope.applicationStatus = "Pending Approval";
+                } else if ($scope.applicant.docStatus === "incomplete") {
+                    $scope.applicationStatus = "Incomplete";
+                } else if ($scope.applicant.docStatus === "failed") {
+                    $scope.applicationStatus = "Rejected";
+                } else {
+                    $scope.applicationStatus = "Invalid Information Provided";
+                }
+            };
+        });
+    </script>
+</body>
+</html>
